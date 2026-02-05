@@ -20,7 +20,36 @@
     <!-- Three.js (Footer 3D) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
+    <!-- Tailwind (Used only for Loader layout) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
     <style>
+        /* --- 0. LOADING PROTOCOL STYLES --- */
+        @font-face {
+            font-family: 'JetBrains Mono';
+            src: url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&display=swap');
+        }
+
+        #loading-screen {
+            position: fixed; inset: 0; z-index: 10000; background-color: #020204;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            font-family: 'JetBrains Mono', monospace; transition: opacity 0.8s ease, visibility 0.8s;
+        }
+        @keyframes fadeInLoader { 
+            from { opacity: 0; transform: translateY(10px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+        @keyframes scaleXLoader { 
+            from { transform: scaleX(0); } 
+            to { transform: scaleX(1); } 
+        }
+        .animate-fade-in { animation: fadeInLoader 0.8s ease-out forwards; }
+        .animate-scale-x { animation: scaleXLoader 1s ease-out forwards; }
+        .scanlines {
+            background: linear-gradient(transparent 50%, rgba(0,0,0,0.1) 50%);
+            background-size: 100% 4px;
+        }
+
         /* --- 1. RESET & VARIABLES --- */
         :root {
             --bg-main: #020204;
@@ -1132,6 +1161,33 @@
     </style>
 </head>
 <body>
+    <div id="loading-screen">
+        <div class="absolute inset-0 opacity-20 pointer-events-none">
+            <div class="absolute inset-0 bg-[linear-gradient(rgba(100,255,218,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(100,255,218,0.05)_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)]"></div>
+        </div>
+        <div class="relative z-10 flex flex-col items-center">
+            <div class="relative mb-20 group">
+                <h1 class="text-5xl md:text-7xl font-extrabold tracking-tighter text-white animate-fade-in uppercase">
+                    RAM PAWAR<span class="text-[#64ffda] animate-pulse">.</span>
+                </h1>
+                <div class="absolute -bottom-4 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#64ffda] to-transparent shadow-[0_0_15px_#64ffda] animate-scale-x"></div>
+                <div class="absolute -top-8 -right-4 text-[10px] text-[#64ffda]/40 tracking-[0.4em] hidden md:block uppercase font-bold">
+                    Protocol v2.0
+                </div>
+            </div>
+            <div class="w-72 md:w-96 mb-10">
+                <div class="flex justify-between items-end mb-4">
+                    <div id="active-log" class="text-[10px] uppercase tracking-[0.3em] text-[#64ffda]/80 min-h-[1rem]">INITIALIZING...</div>
+                    <div class="text-2xl font-bold text-white tabular-nums"><span id="progress-text">0</span>%</div>
+                </div>
+                <div class="h-[3px] w-full bg-white/5 relative overflow-hidden rounded-full">
+                    <div id="progress-bar" class="h-full bg-[#64ffda] shadow-[0_0_20px_#64ffda] transition-all duration-300" style="width: 0%"></div>
+                </div>
+            </div>
+            <div id="log-container" class="flex flex-col gap-2.5 w-72 md:w-96"></div>
+        </div>
+        <div class="absolute inset-0 pointer-events-none scanlines opacity-30"></div>
+    </div>
 
     <!-- CUSTOM CURSOR (Desktop Only) -->
     <div class="cursor-dot" id="cursor-dot"></div>
@@ -1977,6 +2033,52 @@ Based in Hyderabad, my work draws inspiration from technology, intelligence, and
             }
             animate();
         }
+         // --- 0. PRELOADER LOGIC ---
+        const logs = ["SYNCING_CORE", "ESTABLISHING_LINK", "PARSING_ASSETS", "GENERATING_TEXTURES", "COMPLETING"];
+        const logContainer = document.getElementById('log-container');
+        const progressBar = document.getElementById('progress-bar');
+        const progressText = document.getElementById('progress-text');
+        const activeLogDisplay = document.getElementById('active-log');
+
+        logs.forEach((log, i) => {
+            const div = document.createElement('div');
+            div.id = `log-${i}`;
+            div.className = `flex items-center gap-3 transition-all duration-700 opacity-0 -translate-x-5`;
+            div.innerHTML = `<div class="w-1.5 h-1.5 rounded-full bg-white/20"></div><div class="text-[9px] tracking-widest text-white/30 font-mono">${log}</div><div class="status-ok ml-auto text-[8px] text-[#64ffda] opacity-0 font-bold">OK</div>`;
+            logContainer.appendChild(div);
+        });
+
+        const startT = Date.now();
+        const dur = 2200;
+
+        function updatePreloader() {
+            const elapsed = Date.now() - startT;
+            const progress = Math.min(elapsed / dur, 1);
+            const percent = Math.floor(progress * 100);
+            progressBar.style.width = percent + '%';
+            progressText.innerText = percent;
+            const step = Math.min(Math.floor(progress * logs.length), logs.length - 1);
+            activeLogDisplay.innerText = logs[step];
+            logs.forEach((_, i) => {
+                const row = document.getElementById(`log-${i}`);
+                if (i <= step) {
+                    row.classList.remove('opacity-0', '-translate-x-5');
+                    row.classList.add('opacity-100', 'translate-x-0');
+                    if (i < step) row.querySelector('.status-ok').classList.remove('opacity-0');
+                }
+            });
+            if (progress < 1) requestAnimationFrame(updatePreloader);
+            else {
+                setTimeout(() => {
+                    document.getElementById('loading-screen').style.opacity = '0';
+                    setTimeout(() => {
+                        document.getElementById('loading-screen').style.visibility = 'hidden';
+                        document.body.style.overflowY = 'auto';
+                    }, 800);
+                }, 500);
+            }
+        }
+        requestAnimationFrame(updatePreloader);
 
     </script>
 </body>
