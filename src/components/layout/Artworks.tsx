@@ -175,6 +175,13 @@ export default function Artworks() {
       ease: "power2.out"
     }, "morph");
 
+    // Fade out the mandala so it doesn't linger over the content
+    tl.to(".mandala-container", {
+      opacity: 0,
+      duration: 0.6,
+      ease: "power2.out"
+    }, "morph");
+
     tl.to(".artworks-center", {
       x: () => {
         const h = document.querySelector("#artworks-heading");
