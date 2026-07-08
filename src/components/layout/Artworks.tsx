@@ -262,7 +262,11 @@ export default function Artworks() {
     }
     
     // Duplicate the array multiple times for a truly seamless infinite scroll
-    const items = [...colArtworks, ...colArtworks, ...colArtworks, ...colArtworks];
+    const baseItems = [...colArtworks, ...colArtworks, ...colArtworks, ...colArtworks];
+    const items = baseItems.map((art, idx) => ({
+      ...art,
+      id: `${art.id}-${idx}`
+    }));
     
     return (
       <div className={`${colIndex > 2 ? "hidden md:flex" : "flex"} flex-1 flex-col gap-6 overflow-hidden relative group`} style={{ height: "150vh" }}>
@@ -373,13 +377,6 @@ export default function Artworks() {
               transition={{ duration: 0.4 }}
               onClick={() => setSelectedArtwork(null)}
               className="absolute inset-0 bg-black/60 backdrop-blur-xl cursor-pointer"
-            />
-            
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img 
-              src={selectedArtwork.image} 
-              alt="Selected Artwork" 
-              className="w-auto h-auto max-w-[90vw] max-h-[85vh] object-contain rounded-xl shadow-2xl z-50"
             />
             
             {/* The Expanded Card morphing from the grid slot */}
