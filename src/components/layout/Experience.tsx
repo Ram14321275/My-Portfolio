@@ -138,17 +138,15 @@ export default function Experience() {
       x: () => {
         const h = document.querySelector("#experience-heading");
         const c = document.querySelector(".journey-center");
-        const section = containerRef.current;
-        if (!h || !c || !section) return "+=0";
-        const deltaX = (h.getBoundingClientRect().left - section.getBoundingClientRect().left) - c.getBoundingClientRect().left;
+        if (!h || !c) return "+=0";
+        const deltaX = h.getBoundingClientRect().left - c.getBoundingClientRect().left;
         return "+=" + deltaX;
       },
       y: () => {
         const h = document.querySelector("#experience-heading");
         const c = document.querySelector(".journey-center");
-        const section = containerRef.current;
-        if (!h || !c || !section) return "+=0";
-        const deltaY = (h.getBoundingClientRect().top - section.getBoundingClientRect().top) - c.getBoundingClientRect().top;
+        if (!h || !c) return "+=0";
+        const deltaY = h.getBoundingClientRect().top - c.getBoundingClientRect().top;
         return "+=" + deltaY;
       },
       scale: () => {
@@ -161,19 +159,23 @@ export default function Experience() {
       ease: "power2.out"
     }, "morph");
 
+    // Crossfade real heading with animated text to hide any sub-pixel layout shifts
+    tl.to("#experience-heading", { opacity: 1, duration: 0.1 }, "morph+=0.5");
+    tl.to(".journey-center", { opacity: 0, duration: 0.1 }, "morph+=0.5");
+
     tl.to("#main-navbar", {
       yPercent: 0,
       duration: 0.6,
       ease: "power2.out"
-    }, "morph");
+    }, "morph+=0.4");
 
-    // 8. Fade in the rest of the content beautifully
+    // 8. Fade in the rest of the content beautifully AFTER text morph
     tl.to(".experience-content-body", {
       opacity: 1,
       y: 0,
       duration: 1.2,
       ease: "expo.out"
-    }, "morph+=0.2");
+    }, "morph+=0.5");
 
     // Scroll trigger to start the video
     ScrollTrigger.create({

@@ -179,17 +179,15 @@ export default function Artworks() {
       x: () => {
         const h = document.querySelector("#artworks-heading");
         const c = document.querySelector(".artworks-center");
-        const section = containerRef.current;
-        if (!h || !c || !section) return "+=0";
-        const deltaX = (h.getBoundingClientRect().left - section.getBoundingClientRect().left) - c.getBoundingClientRect().left;
+        if (!h || !c) return "+=0";
+        const deltaX = h.getBoundingClientRect().left - c.getBoundingClientRect().left;
         return "+=" + deltaX;
       },
       y: () => {
         const h = document.querySelector("#artworks-heading");
         const c = document.querySelector(".artworks-center");
-        const section = containerRef.current;
-        if (!h || !c || !section) return "+=0";
-        const deltaY = (h.getBoundingClientRect().top - section.getBoundingClientRect().top) - c.getBoundingClientRect().top;
+        if (!h || !c) return "+=0";
+        const deltaY = h.getBoundingClientRect().top - c.getBoundingClientRect().top;
         return "+=" + deltaY;
       },
       scale: () => {
@@ -202,18 +200,22 @@ export default function Artworks() {
       ease: "power2.out"
     }, "morph");
     
+    // Crossfade real heading with animated text to hide any sub-pixel layout shifts
+    tl.to("#artworks-heading", { opacity: 1, duration: 0.1 }, "morph+=0.5");
+    tl.to(".artworks-center", { opacity: 0, duration: 0.1 }, "morph+=0.5");
+
     tl.to("#main-navbar", {
       yPercent: 0,
       duration: 0.6,
       ease: "power2.out"
-    }, "morph");
+    }, "morph+=0.4");
 
     tl.to(".artworks-content-body", {
       opacity: 1,
       y: 0,
       duration: 1.2,
       ease: "expo.out"
-    }, "morph+=0.2");
+    }, "morph+=0.5");
 
     // Scroll trigger
     ScrollTrigger.create({
@@ -309,11 +311,11 @@ export default function Artworks() {
 
         <div className="relative flex items-center justify-center w-full h-full z-10">
           {[0, 1].map((i) => (
-            <h2 key={`above-${i}`} className="artworks-duplicate absolute text-[13vw] sm:text-[7rem] lg:text-[9.5rem] uppercase leading-none opacity-0 tracking-tighter font-futura" style={{ color: "transparent", WebkitTextStroke: "2px #ffffff" }}>Artworks</h2>
+            <h2 key={`above-${i}`} className="artworks-duplicate absolute text-[13vw] sm:text-[7rem] lg:text-[9.5rem] uppercase leading-[0.85] opacity-0 tracking-tighter font-futura" style={{ color: "transparent", WebkitTextStroke: "2px #ffffff" }}>Artworks</h2>
           ))}
-          <h2 className="artworks-center absolute text-[13vw] sm:text-[7rem] lg:text-[9.5rem] uppercase leading-none tracking-tighter font-futura text-[#208A89]" style={{ WebkitTextStroke: '0px' }}>Artworks</h2>
+          <h2 className="artworks-center absolute text-[13vw] sm:text-[7rem] lg:text-[9.5rem] uppercase leading-[0.85] tracking-tighter font-futura text-[#208A89]" style={{ WebkitTextStroke: '0px' }}>Artworks</h2>
           {[2, 3].map((i) => (
-            <h2 key={`below-${i}`} className="artworks-duplicate absolute text-[13vw] sm:text-[7rem] lg:text-[9.5rem] uppercase leading-none opacity-0 tracking-tighter font-futura" style={{ color: "transparent", WebkitTextStroke: "2px #ffffff" }}>Artworks</h2>
+            <h2 key={`below-${i}`} className="artworks-duplicate absolute text-[13vw] sm:text-[7rem] lg:text-[9.5rem] uppercase leading-[0.85] opacity-0 tracking-tighter font-futura" style={{ color: "transparent", WebkitTextStroke: "2px #ffffff" }}>Artworks</h2>
           ))}
         </div>
       </div>

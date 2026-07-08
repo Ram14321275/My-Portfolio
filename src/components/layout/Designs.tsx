@@ -187,17 +187,15 @@ export default function Designs() {
       x: () => {
         const h = document.querySelector("#designs-heading");
         const c = document.querySelector(".designs-center");
-        const section = containerRef.current;
-        if (!h || !c || !section) return "+=0";
-        const deltaX = (h.getBoundingClientRect().left - section.getBoundingClientRect().left) - c.getBoundingClientRect().left;
+        if (!h || !c) return "+=0";
+        const deltaX = h.getBoundingClientRect().left - c.getBoundingClientRect().left;
         return "+=" + deltaX;
       },
       y: () => {
         const h = document.querySelector("#designs-heading");
         const c = document.querySelector(".designs-center");
-        const section = containerRef.current;
-        if (!h || !c || !section) return "+=0";
-        const deltaY = (h.getBoundingClientRect().top - section.getBoundingClientRect().top) - c.getBoundingClientRect().top;
+        if (!h || !c) return "+=0";
+        const deltaY = h.getBoundingClientRect().top - c.getBoundingClientRect().top;
         return "+=" + deltaY;
       },
       scale: () => {
@@ -210,24 +208,18 @@ export default function Designs() {
       ease: "power2.out"
     }, "morph");
 
+    tl.to("#designs-heading", { opacity: 1, duration: 0.1 }, "morph+=0.5");
+    tl.to(".designs-center", { opacity: 0, duration: 0.1 }, "morph+=0.5");
+
     tl.to("#main-navbar", {
       yPercent: 0,
       duration: 0.6,
       ease: "power2.out"
-    }, "morph");
+    }, "morph+=0.4");
 
-    tl.to(".designs-content-body", {
-      opacity: 1,
-      y: 0,
-      duration: 1.2,
-      ease: "expo.out"
-    }, "morph+=0.2");
-
-    // 8. Animate the masonry cards sliding in from left and right
-    // We already fade in the container, but the cards can still stagger in
     tl.fromTo(".design-card-wrapper", 
       { 
-        x: (index) => (index % 2 === 0 ? -150 : 150), // Evens from left, odds from right
+        x: (index) => (index % 2 === 0 ? -150 : 150),
         opacity: 0 
       },
       {
@@ -237,8 +229,15 @@ export default function Designs() {
         stagger: 0.1,
         ease: "power3.out"
       },
-      "morph+=0.3" // Start sliding in just as the container fades in
+      "morph+=0.5" // Start sliding in just as the container fades in
     );
+
+    tl.to(".designs-content-body", {
+      opacity: 1,
+      y: 0,
+      duration: 1.2,
+      ease: "expo.out"
+    }, "morph+=0.5");
 
     // Scroll trigger to start the video
     ScrollTrigger.create({
@@ -272,9 +271,9 @@ export default function Designs() {
       <div className="designs-overlay fixed inset-0 z-[100] bg-[#ffffff] flex items-center justify-center opacity-0 pointer-events-none" style={{ display: "flex" }}>
         <div className="relative flex items-center justify-center w-full h-full">
           {[0, 1].map((i) => (
-            <h2 key={`above-${i}`} className="designs-duplicate absolute text-[13vw] sm:text-[8rem] lg:text-[10rem] uppercase leading-none opacity-0 tracking-tighter font-futura" style={{ color: "transparent", WebkitTextStroke: "2px #ffffff" }}>Designs</h2>
+            <h2 key={`above-${i}`} className="designs-duplicate absolute text-[13vw] sm:text-[8rem] lg:text-[10rem] uppercase leading-[0.85] opacity-0 tracking-tighter font-futura" style={{ color: "transparent", WebkitTextStroke: "2px #ffffff" }}>Designs</h2>
           ))}
-          <h2 className="designs-center absolute text-[13vw] sm:text-[8rem] lg:text-[10rem] uppercase leading-none tracking-tighter font-futura text-[#fd4107]" style={{ WebkitTextStroke: '0px' }}>Designs</h2>
+          <h2 className="designs-center absolute text-[13vw] sm:text-[8rem] lg:text-[10rem] uppercase leading-[0.85] tracking-tighter font-futura text-[#fd4107]" style={{ WebkitTextStroke: '0px' }}>Designs</h2>
           {[2, 3].map((i) => (
             <h2 key={`below-${i}`} className="designs-duplicate absolute text-[13vw] sm:text-[8rem] lg:text-[10rem] uppercase leading-none opacity-0 tracking-tighter font-futura" style={{ color: "transparent", WebkitTextStroke: "2px #ffffff" }}>Designs</h2>
           ))}
