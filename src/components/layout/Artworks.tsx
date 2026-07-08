@@ -227,7 +227,7 @@ export default function Artworks() {
     // Scroll trigger
     ScrollTrigger.create({
       trigger: containerRef.current,
-      start: "top top",
+      start: "top 10%",
       onEnter: () => {
         if (typeof window !== "undefined" && window.__isNavigating) {
           hasPlayed = true;
