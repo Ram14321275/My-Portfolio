@@ -191,11 +191,11 @@ export default function Contact() {
         <div className="flex flex-col lg:flex-row items-center lg:items-start justify-between gap-16 lg:gap-8">
           
           {/* Left Side: Hollow-to-Solid "GET IN TOUCH" */}
-          <div className="flex flex-col select-none cursor-crosshair group/text mb-12 lg:mb-0 w-full lg:w-auto text-center lg:text-left">
-            <h2 className="text-[22vw] sm:text-[10rem] md:text-[14rem] lg:text-[17rem] xl:text-[20rem] leading-[0.72] tracking-tighter font-futura uppercase text-transparent transition-colors duration-700 hover:text-[#1e1e1e] stroke-text-thin md:stroke-text-thick">
+          <div className="flex flex-col select-none cursor-crosshair group/text mb-8 lg:mb-0 w-full lg:w-auto text-center lg:text-left">
+            <h2 className="text-[16vw] sm:text-[16vw] md:text-[12rem] lg:text-[15rem] xl:text-[18rem] leading-[0.8] tracking-tighter font-futura uppercase text-transparent transition-colors duration-700 hover:text-[#1e1e1e] stroke-text-thin md:stroke-text-thick">
               GET IN
             </h2>
-            <h2 className="text-[22vw] sm:text-[10rem] md:text-[14rem] lg:text-[17rem] xl:text-[20rem] leading-[0.72] tracking-tighter font-futura uppercase text-transparent transition-colors duration-700 hover:text-[#1e1e1e] stroke-text-thin md:stroke-text-thick">
+            <h2 className="text-[16vw] sm:text-[16vw] md:text-[12rem] lg:text-[15rem] xl:text-[18rem] leading-[0.8] tracking-tighter font-futura uppercase text-transparent transition-colors duration-700 hover:text-[#1e1e1e] stroke-text-thin md:stroke-text-thick">
               TOUCH
             </h2>
           </div>
