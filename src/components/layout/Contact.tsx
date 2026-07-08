@@ -220,7 +220,7 @@ export default function Contact() {
             </div>
 
             {/* Social Icons Row */}
-            <div className="flex gap-6 items-center">
+            <div className="flex gap-3 sm:gap-4 md:gap-6 items-center w-full justify-center max-w-[100vw] px-2 flex-wrap sm:flex-nowrap">
               {[
                 { icon: FiMail, href: "mailto:sairamnayakvankudoth@gmail.com" },
                 { icon: FiInstagram, href: "https://www.instagram.com/sairamnayak_pawar?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw%3D%3D" },
@@ -231,9 +231,9 @@ export default function Contact() {
                 <a 
                   key={i} 
                   href={social.href}
-                  className="w-14 h-14 md:w-16 md:h-16 rounded-full border-2 border-[#1e1e1e] flex items-center justify-center text-[#1e1e1e] hover:bg-[#1e1e1e] hover:text-white transition-all duration-300 transform hover:scale-110 hover:-translate-y-2 group"
+                  className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 flex-shrink-0 rounded-full border-2 border-[#1e1e1e] flex items-center justify-center text-[#1e1e1e] hover:bg-[#1e1e1e] hover:text-white transition-all duration-300 transform hover:scale-110 hover:-translate-y-2 group"
                 >
-                  <social.icon className="text-2xl md:text-3xl" />
+                  <social.icon className="text-xl sm:text-2xl md:text-3xl" />
                 </a>
               ))}
             </div>
