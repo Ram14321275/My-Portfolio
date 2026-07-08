@@ -180,7 +180,7 @@ export default function Artworks() {
         const h = document.querySelector("#artworks-heading");
         const c = document.querySelector(".artworks-center");
         const section = containerRef.current;
-        if (!h || !c || !section) return 0;
+        if (!h || !c || !section) return "+=0";
         const deltaX = (h.getBoundingClientRect().left - section.getBoundingClientRect().left) - c.getBoundingClientRect().left;
         return "+=" + deltaX;
       },
@@ -188,7 +188,7 @@ export default function Artworks() {
         const h = document.querySelector("#artworks-heading");
         const c = document.querySelector(".artworks-center");
         const section = containerRef.current;
-        if (!h || !c || !section) return 0;
+        if (!h || !c || !section) return "+=0";
         const deltaY = (h.getBoundingClientRect().top - section.getBoundingClientRect().top) - c.getBoundingClientRect().top;
         return "+=" + deltaY;
       },

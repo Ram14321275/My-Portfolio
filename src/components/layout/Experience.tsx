@@ -139,7 +139,7 @@ export default function Experience() {
         const h = document.querySelector("#experience-heading");
         const c = document.querySelector(".journey-center");
         const section = containerRef.current;
-        if (!h || !c || !section) return 0;
+        if (!h || !c || !section) return "+=0";
         const deltaX = (h.getBoundingClientRect().left - section.getBoundingClientRect().left) - c.getBoundingClientRect().left;
         return "+=" + deltaX;
       },
@@ -147,7 +147,7 @@ export default function Experience() {
         const h = document.querySelector("#experience-heading");
         const c = document.querySelector(".journey-center");
         const section = containerRef.current;
-        if (!h || !c || !section) return 0;
+        if (!h || !c || !section) return "+=0";
         const deltaY = (h.getBoundingClientRect().top - section.getBoundingClientRect().top) - c.getBoundingClientRect().top;
         return "+=" + deltaY;
       },

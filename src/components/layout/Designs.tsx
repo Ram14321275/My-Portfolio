@@ -188,7 +188,7 @@ export default function Designs() {
         const h = document.querySelector("#designs-heading");
         const c = document.querySelector(".designs-center");
         const section = containerRef.current;
-        if (!h || !c || !section) return 0;
+        if (!h || !c || !section) return "+=0";
         const deltaX = (h.getBoundingClientRect().left - section.getBoundingClientRect().left) - c.getBoundingClientRect().left;
         return "+=" + deltaX;
       },
@@ -196,7 +196,7 @@ export default function Designs() {
         const h = document.querySelector("#designs-heading");
         const c = document.querySelector(".designs-center");
         const section = containerRef.current;
-        if (!h || !c || !section) return 0;
+        if (!h || !c || !section) return "+=0";
         const deltaY = (h.getBoundingClientRect().top - section.getBoundingClientRect().top) - c.getBoundingClientRect().top;
         return "+=" + deltaY;
       },
