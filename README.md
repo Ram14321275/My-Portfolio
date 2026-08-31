@@ -2,7 +2,7 @@
 
 Welcome to my personal portfolio repository! This is a high-end, premium web experience crafted to showcase my work as an AI Solutions Architect, Graphic Designer, and Artist. It features immersive 3D interactions, smooth scrolling, and dynamic micro-animations.
 
-🌐 **Live Website**: [github.com/Ram14321275/My-Portfolio](https://github.com/Ram14321275/My-Portfolio) (or local `http://localhost:3000`)
+🌐 **Live Website**: https://www.rampawar.in/
 
 ---
 
