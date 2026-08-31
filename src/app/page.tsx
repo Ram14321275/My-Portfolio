@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Header from "@/components/layout/Header";
 import Hero from "@/components/layout/Hero";
 import Scene from "@/components/3d/Scene";
@@ -12,6 +12,8 @@ import Projects from "@/components/layout/Projects";
 import Designs from "@/components/layout/Designs";
 import Artworks from "@/components/layout/Artworks";
 import Contact from "@/components/layout/Contact";
+import LoadingScreen from "@/components/animations/LoadingScreen";
+import { useLenis } from "lenis/react";
 
 declare global {
   interface Window {
@@ -21,6 +23,18 @@ declare global {
 
 export default function Home() {
   const mainRef = useRef<HTMLElement>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const lenis = useLenis();
+
+  useEffect(() => {
+    if (lenis) {
+      if (isLoading) {
+        lenis.stop();
+      } else {
+        lenis.start();
+      }
+    }
+  }, [lenis, isLoading]);
 
   useEffect(() => {
     // Ensure we start at the top, without fighting ScrollTrigger during mount
@@ -79,21 +93,24 @@ export default function Home() {
   }, []);
 
   return (
-    <main ref={mainRef} className="relative min-h-screen w-full bg-white overflow-x-hidden">
-      <Header />
-      {/* Hero / Top Section Wrapper */}
-      <div className="relative flex w-full max-w-[1920px] mx-auto h-screen">
-        <Hero />
-        <Scene />
-      </div>
+    <>
+      <LoadingScreen onComplete={() => setIsLoading(false)} />
+      <main ref={mainRef} className="relative min-h-screen w-full bg-white overflow-x-hidden">
+        <Header />
+        {/* Hero / Top Section Wrapper */}
+        <div className="relative flex w-full max-w-[1920px] mx-auto h-screen">
+          <Hero />
+          <Scene />
+        </div>
 
-      {/* About Me Section */}
-      <AboutMe />
-      <Experience />
-      <Projects />
-      <Designs />
-      <Artworks />
-      <Contact />
-    </main>
+        {/* About Me Section */}
+        <AboutMe />
+        <Experience />
+        <Projects />
+        <Designs />
+        <Artworks />
+        <Contact />
+      </main>
+    </>
   );
 }

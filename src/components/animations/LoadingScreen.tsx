@@ -3,9 +3,46 @@
 import React, { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
+import * as THREE from "three";
 
 interface LoadingScreenProps {
   onComplete: () => void;
+}
+
+// Module-level variables to track assets immediately upon module import
+let threeTotal = 0;
+let threeLoaded = 0;
+let threeComplete = false;
+let pageLoaded = false;
+
+if (typeof window !== "undefined") {
+  // Bind immediately to default loading manager to catch child components' texture loads
+  THREE.DefaultLoadingManager.onStart = (url, itemsLoaded, itemsTotal) => {
+    threeLoaded = itemsLoaded;
+    threeTotal = itemsTotal;
+    threeComplete = false;
+  };
+
+  THREE.DefaultLoadingManager.onProgress = (url, itemsLoaded, itemsTotal) => {
+    threeLoaded = itemsLoaded;
+    threeTotal = itemsTotal;
+  };
+
+  THREE.DefaultLoadingManager.onLoad = () => {
+    threeComplete = true;
+  };
+
+  THREE.DefaultLoadingManager.onError = () => {
+    // Avoid blocking on errors
+  };
+
+  if (document.readyState === "complete") {
+    pageLoaded = true;
+  } else {
+    window.addEventListener("load", () => {
+      pageLoaded = true;
+    });
+  }
 }
 
 export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
@@ -17,6 +54,7 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
     let animationFrame = 0;
     let finishTimer = 0;
     const startedAt = performance.now();
+    let currentProgress = 0;
 
     const finish = () => {
       setProgress(100);
@@ -36,10 +74,40 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
 
     const tick = (now: number) => {
       const elapsed = now - startedAt;
-      const nextProgress = Math.min(100, Math.round((elapsed / 1200) * 100));
-      setProgress(nextProgress);
 
-      if (nextProgress >= 100) {
+      // Base animation-based progress reaches 95% in 1500ms
+      const baseProgress = Math.min(95, Math.round((elapsed / 1500) * 95));
+
+      if (currentProgress < baseProgress) {
+        currentProgress = baseProgress;
+      }
+
+      if (currentProgress >= 95) {
+        // 1. Check HTML images in document (excluding lazy-loaded ones)
+        const images = typeof document !== "undefined" ? Array.from(document.images) : [];
+        const criticalImages = images.filter((img) => img.getAttribute("loading") !== "lazy");
+        const imagesFinished = criticalImages.every((img) => img.complete);
+
+        // 2. Check window load status
+        const pageFinished = pageLoaded || (typeof document !== "undefined" && document.readyState === "complete");
+
+        // 3. Check ThreeJS textures
+        const threeFinished = threeComplete || threeTotal === 0 || (threeLoaded >= threeTotal);
+
+        if (imagesFinished && pageFinished && threeFinished) {
+          currentProgress += 1;
+          if (currentProgress > 100) {
+            currentProgress = 100;
+          }
+        } else {
+          // Stay stuck at 95% until all assets are complete
+          currentProgress = 95;
+        }
+      }
+
+      setProgress(currentProgress);
+
+      if (currentProgress >= 100) {
         finish();
         return;
       }
