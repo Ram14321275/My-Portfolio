@@ -472,9 +472,9 @@ export default function Projects() {
               </div>
 
               {/* Modal Content */}
-              <div className="p-6 sm:p-10 overflow-y-auto modal-scrollable-content custom-scrollbar flex flex-col flex-1 min-h-0">
+              <div className="p-6 sm:p-10 pb-4 overflow-y-auto modal-scrollable-content custom-scrollbar flex flex-col flex-1 min-h-0">
 
-                <span className="inline-block bg-[#ff9808] text-white text-[0.8rem] font-bold px-4 py-1.5 rounded-full uppercase tracking-widest mb-4 font-glacial">
+                <span className="inline-block bg-[#ff9808] text-white text-[0.8rem] font-bold px-4 py-1.5 rounded-full uppercase tracking-widest mb-4 font-glacial w-fit">
                   {selectedProject.badge}
                 </span>
 
@@ -482,12 +482,15 @@ export default function Projects() {
                   {selectedProject.title}
                 </h3>
 
-                <p className="text-base md:text-xl text-gray-600 font-nourd leading-relaxed mb-8 md:mb-10">
+                <p className="text-base md:text-xl text-gray-600 font-nourd leading-relaxed">
                   {selectedProject.fullDesc}
                 </p>
 
-                {/* Action Buttons */}
-                <div className="flex flex-col sm:flex-row gap-4 mt-auto">
+              </div>
+
+              {/* Action Buttons */}
+              <div className="p-6 sm:px-10 sm:pb-10 sm:pt-4 bg-white border-t border-gray-100 shrink-0">
+                <div className="flex flex-col sm:flex-row gap-4">
                   <a
                     href={selectedProject.github !== "#" ? selectedProject.github : "#"}
                     target={selectedProject.github !== "#" ? "_blank" : undefined}
@@ -519,7 +522,6 @@ export default function Projects() {
                     Live Preview
                   </a>
                 </div>
-
               </div>
             </motion.div>
           </div>
